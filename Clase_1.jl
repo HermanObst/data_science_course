@@ -18,6 +18,9 @@ begin
     df = DataFrame(data)
 end
 
+# ╔═╡ e9b8cff2-94fa-11eb-3dbc-5d213b9ffcc8
+using CSV, Statistics
+
 # ╔═╡ 2193673c-94e1-11eb-175e-4df58b84eb75
 md"""# Clase 1: Julia y primeras nociones de programación
 
@@ -137,7 +140,22 @@ describe(df)
 # ╔═╡ 633024a8-94fa-11eb-1ce5-6b6f90335ea1
 filter(col -> col[3] < 0.5, df)
 
-# ╔═╡ e9b8cff2-94fa-11eb-3dbc-5d213b9ffcc8
+# ╔═╡ 8598931e-956c-11eb-134c-33af4c68dbc1
+iris_df = CSV.File("Iris.csv") |> DataFrame
+
+# ╔═╡ 389a6094-956d-11eb-0b5b-1fb2b9d4c91e
+md"Agrupamos el data frame por especies"
+
+# ╔═╡ 4929d4ca-956d-11eb-0131-a1283e495db3
+gdf = groupby(iris_df, :Species)
+
+# ╔═╡ c4544b1a-956d-11eb-260c-d54a008b6c2b
+combine(gdf, :PetalLengthCm => mean)
+
+# ╔═╡ 8badd92e-956e-11eb-2a5d-938b8332aece
+filter!(row -> row.Species != "Iris-setosa", iris_df)
+
+# ╔═╡ efc4044e-956e-11eb-34a8-d9e148ea4dee
 
 
 # ╔═╡ Cell order:
@@ -173,3 +191,9 @@ filter(col -> col[3] < 0.5, df)
 # ╠═e33fd8ec-94f9-11eb-0f67-b10c30f82beb
 # ╠═633024a8-94fa-11eb-1ce5-6b6f90335ea1
 # ╠═e9b8cff2-94fa-11eb-3dbc-5d213b9ffcc8
+# ╠═8598931e-956c-11eb-134c-33af4c68dbc1
+# ╟─389a6094-956d-11eb-0b5b-1fb2b9d4c91e
+# ╠═4929d4ca-956d-11eb-0131-a1283e495db3
+# ╠═c4544b1a-956d-11eb-260c-d54a008b6c2b
+# ╠═8badd92e-956e-11eb-2a5d-938b8332aece
+# ╠═efc4044e-956e-11eb-34a8-d9e148ea4dee
