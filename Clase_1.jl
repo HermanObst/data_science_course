@@ -71,6 +71,17 @@ vector_ = [9,8,7,6,5]
 # ╔═╡ ad442e20-94ed-11eb-13c4-079668f92aa4
 vector + vector_
 
+# ╔═╡ 9537e766-94f9-11eb-03f8-d77a09477d33
+vector_cuadrado = []
+
+# ╔═╡ 5a4588b6-94f9-11eb-2e47-fb9ce77c45c8
+for numero in vector
+	push!(vector_cuadrado, numero^2)
+end
+
+# ╔═╡ 7cc25720-94f9-11eb-12ef-1be2a137ccf3
+vector_cuadrado
+
 # ╔═╡ 72a25914-94ee-11eb-2df9-bdc220c1b0c5
 md"## Graficación"
 
@@ -109,10 +120,25 @@ df.uno
 # ╔═╡ 903b8e58-94f8-11eb-128e-b95a26c712ea
 df[1,:]
 
+# ╔═╡ bbb96fec-94f9-11eb-094f-6547d1582fbb
+df[3:5, ["dos", "cuatro", "cinco"]]
+
 # ╔═╡ 9e9999ea-94f8-11eb-2e53-3911d1a018e9
 for fila in eachrow(df) 
 	println(fila.uno)
 end
+
+# ╔═╡ 55f0ba08-94fa-11eb-13ea-914410b7c02a
+md"#### Funciones de alto nivel"
+
+# ╔═╡ e33fd8ec-94f9-11eb-0f67-b10c30f82beb
+describe(df)
+
+# ╔═╡ 633024a8-94fa-11eb-1ce5-6b6f90335ea1
+filter(col -> col[3] < 0.5, df)
+
+# ╔═╡ e9b8cff2-94fa-11eb-3dbc-5d213b9ffcc8
+
 
 # ╔═╡ Cell order:
 # ╟─2193673c-94e1-11eb-175e-4df58b84eb75
@@ -127,6 +153,9 @@ end
 # ╠═574c51e6-94ed-11eb-2fa6-335ec7d6ba5c
 # ╠═9d198bda-94ed-11eb-2f26-a1363789c034
 # ╠═ad442e20-94ed-11eb-13c4-079668f92aa4
+# ╠═9537e766-94f9-11eb-03f8-d77a09477d33
+# ╠═5a4588b6-94f9-11eb-2e47-fb9ce77c45c8
+# ╠═7cc25720-94f9-11eb-12ef-1be2a137ccf3
 # ╟─72a25914-94ee-11eb-2df9-bdc220c1b0c5
 # ╠═192df0ba-94f7-11eb-2b4d-1739ff47c98c
 # ╠═84f3e0ea-94ee-11eb-0f96-a9e094716389
@@ -138,4 +167,9 @@ end
 # ╠═ea62a4f0-94f5-11eb-3b92-678fb6c684d7
 # ╠═816ec820-94f8-11eb-1223-f54d2eb81c33
 # ╠═903b8e58-94f8-11eb-128e-b95a26c712ea
+# ╠═bbb96fec-94f9-11eb-094f-6547d1582fbb
 # ╠═9e9999ea-94f8-11eb-2e53-3911d1a018e9
+# ╟─55f0ba08-94fa-11eb-13ea-914410b7c02a
+# ╠═e33fd8ec-94f9-11eb-0f67-b10c30f82beb
+# ╠═633024a8-94fa-11eb-1ce5-6b6f90335ea1
+# ╠═e9b8cff2-94fa-11eb-3dbc-5d213b9ffcc8
