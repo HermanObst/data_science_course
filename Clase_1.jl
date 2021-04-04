@@ -103,6 +103,17 @@ md"## DataFrames"
 # ╔═╡ ea62a4f0-94f5-11eb-3b92-678fb6c684d7
 rename!(df, ["uno", "dos", "tres", "cuatro", "cinco"])
 
+# ╔═╡ 816ec820-94f8-11eb-1223-f54d2eb81c33
+df.uno
+
+# ╔═╡ 903b8e58-94f8-11eb-128e-b95a26c712ea
+df[1,:]
+
+# ╔═╡ 9e9999ea-94f8-11eb-2e53-3911d1a018e9
+for fila in eachrow(df) 
+	println(fila.uno)
+end
+
 # ╔═╡ Cell order:
 # ╟─2193673c-94e1-11eb-175e-4df58b84eb75
 # ╠═7ef1f5ee-94ec-11eb-0437-3352923aeeba
@@ -125,3 +136,6 @@ rename!(df, ["uno", "dos", "tres", "cuatro", "cinco"])
 # ╟─732bce26-94f4-11eb-359e-0d521ed62399
 # ╠═5cb8035c-94f5-11eb-3c6e-35978f6a9c7f
 # ╠═ea62a4f0-94f5-11eb-3b92-678fb6c684d7
+# ╠═816ec820-94f8-11eb-1223-f54d2eb81c33
+# ╠═903b8e58-94f8-11eb-128e-b95a26c712ea
+# ╠═9e9999ea-94f8-11eb-2e53-3911d1a018e9
