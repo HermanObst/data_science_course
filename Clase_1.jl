@@ -100,6 +100,20 @@ vector_fila = [1 2 3 4]
 # ╔═╡ fc7e02c7-8d51-4f9c-8e1d-1d5f844db2e0
 size(vector_fila)
 
+# ╔═╡ 042b7ae5-ae7b-43e8-af5f-b4c53d0c32e9
+function suma_uno(numero)
+	return numero + 1
+end
+
+# ╔═╡ fa97797b-c721-4bfa-a755-62be2566db1f
+vector
+
+# ╔═╡ 38956f41-4c35-4c4a-8ac2-504e1566f26d
+suma_uno(vector)
+
+# ╔═╡ d1280844-457e-4979-85a5-dc1b6bb5f7a8
+suma_uno.(vector)
+
 # ╔═╡ b0c8b7fc-8bcd-45ce-80f9-9c1e25eab5d1
 md"##### Matrices"
 
@@ -233,6 +247,10 @@ filter!(row -> row.Species != "Iris-setosa", iris_df)
 # ╠═7cc25720-94f9-11eb-12ef-1be2a137ccf3
 # ╠═eb025511-99da-4626-8b50-8428d9857524
 # ╠═fc7e02c7-8d51-4f9c-8e1d-1d5f844db2e0
+# ╠═042b7ae5-ae7b-43e8-af5f-b4c53d0c32e9
+# ╠═fa97797b-c721-4bfa-a755-62be2566db1f
+# ╠═38956f41-4c35-4c4a-8ac2-504e1566f26d
+# ╠═d1280844-457e-4979-85a5-dc1b6bb5f7a8
 # ╟─b0c8b7fc-8bcd-45ce-80f9-9c1e25eab5d1
 # ╠═2252dcfc-065c-4c1c-b16c-b17593f9a723
 # ╠═a937ddd1-61b3-4f99-8f9e-eb5070b60bce
