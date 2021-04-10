@@ -63,7 +63,7 @@ md"##### Enteros"
 md"##### Vectores"
 
 # ╔═╡ 2c482dce-94ed-11eb-30eb-d525ba4aea64
-vector = [1,2,3,4,5]
+vector = [1,2,3,4,5] #Vector columna
 
 # ╔═╡ b02663bc-d722-488b-a384-939f9f80cc73
 size(vector)
