@@ -22,7 +22,7 @@ end
 using CSV, Statistics
 
 # ╔═╡ 2193673c-94e1-11eb-175e-4df58b84eb75
-md"""# Clase 1: Julia y primeras nociones de programación
+md"""# Clase 1: Julia y primeras nociones programación científica
 
 ## ¿Por qué Julia?
 
