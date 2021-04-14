@@ -22,7 +22,38 @@ end
 using CSV, Statistics
 
 # ╔═╡ 2193673c-94e1-11eb-175e-4df58b84eb75
-md"""# Clase 1: Julia y primeras nociones programación científica
+md"""
+
+# Bienvenidxs al curso de ciencia de datos del MLI
+
+## Plan de Trabajo
+
+### Primera clase
+
+- ¿Por qué Julia?
+- Primeros pasos
+- Herramientas básicas para ciencia de datos
+
+### Segunda clase
+
+- Introducción a la estadística bayesiana
+- Introducción a la programación probabilistica 
+- Algunas nociones de distribuciones de probabilidad 
+- **Aplicación**: detección y ubicación temporal para el cambio en la tasa de arrivo de clientes a un local
+
+### Tercera clase
+
+- Profundización conceptual de la estadística bayesiana
+- Cuantificación de la incertidumbre del modelo
+- **Aplicación**: Modelo para elección del precio óptimo de un producto contando con una prueba piloto. Análisis ingreso/varianza.
+
+### Cuarta clase
+
+- Modelos bayesianos jerárquicos
+- **Aplicación**: Modelado en deportes. Modelo analítico para la premier league. Simulación de partidos y predicción.
+
+
+# Clase 1: Julia y primeras nociones programación científica
 
 ## ¿Por qué Julia?
 
