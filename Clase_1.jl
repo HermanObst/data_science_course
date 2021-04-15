@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.1
+# v0.14.2
 
 using Markdown
 using InteractiveUtils
@@ -117,6 +117,9 @@ vector + vector_
 # ╔═╡ 9537e766-94f9-11eb-03f8-d77a09477d33
 vector_cuadrado = []
 
+# ╔═╡ 7c0046bf-e814-415f-984a-2aca174b4f67
+vector
+
 # ╔═╡ 5a4588b6-94f9-11eb-2e47-fb9ce77c45c8
 for numero in vector
 	push!(vector_cuadrado, numero^2)
@@ -178,6 +181,27 @@ a * [1 1;1 1]
 # ╔═╡ 6e0bb9ce-cc30-488d-a368-33399474588b
 [1 1; 1 1] * a
 
+# ╔═╡ 3fad3067-c887-4b62-ae3a-7ddd56f8e0ba
+a
+
+# ╔═╡ dced837a-9519-478f-a092-394668d6cb52
+md"**Transposición**"
+
+# ╔═╡ f97e0145-8b03-41af-afbb-a286b25c2814
+a_T = a'
+
+# ╔═╡ 2aa48230-46c8-4081-891b-3b00321992d1
+c = [2 2;2 4]
+
+# ╔═╡ f60bc545-3889-4828-8e91-d33bca5e71f0
+md"**Inversión**"
+
+# ╔═╡ 1e9a691a-d72d-43d6-9d80-2bff817bd5f0
+c_inv = inv(c)
+
+# ╔═╡ 6e7dfe5e-da04-44fb-9ac2-6e8ae49225fe
+c * c_inv
+
 # ╔═╡ 72a25914-94ee-11eb-2df9-bdc220c1b0c5
 md"## Graficación"
 
@@ -231,7 +255,7 @@ for fila in eachrow(df)
 end
 
 # ╔═╡ 55f0ba08-94fa-11eb-13ea-914410b7c02a
-md"#### Funciones de alto nivel"
+md"#### Manipulación de DataFrames"
 
 # ╔═╡ e33fd8ec-94f9-11eb-0f67-b10c30f82beb
 describe(df)
@@ -257,6 +281,9 @@ combine(gdf, :PetalLengthCm => mean)
 # ╔═╡ 8badd92e-956e-11eb-2a5d-938b8332aece
 filter!(row -> row.Species != "Iris-setosa", iris_df)
 
+# ╔═╡ 0c08d1b7-c48b-4096-815f-107ce1b6e5b0
+md"### Referencias"
+
 # ╔═╡ Cell order:
 # ╟─2193673c-94e1-11eb-175e-4df58b84eb75
 # ╠═7ef1f5ee-94ec-11eb-0437-3352923aeeba
@@ -274,6 +301,7 @@ filter!(row -> row.Species != "Iris-setosa", iris_df)
 # ╠═9d198bda-94ed-11eb-2f26-a1363789c034
 # ╠═ad442e20-94ed-11eb-13c4-079668f92aa4
 # ╠═9537e766-94f9-11eb-03f8-d77a09477d33
+# ╠═7c0046bf-e814-415f-984a-2aca174b4f67
 # ╠═5a4588b6-94f9-11eb-2e47-fb9ce77c45c8
 # ╠═7cc25720-94f9-11eb-12ef-1be2a137ccf3
 # ╠═eb025511-99da-4626-8b50-8428d9857524
@@ -293,6 +321,13 @@ filter!(row -> row.Species != "Iris-setosa", iris_df)
 # ╠═eaa4d223-9b77-4128-aac5-e191f68e4a69
 # ╠═75330790-1705-4994-a7ec-5a354387932b
 # ╠═6e0bb9ce-cc30-488d-a368-33399474588b
+# ╠═3fad3067-c887-4b62-ae3a-7ddd56f8e0ba
+# ╟─dced837a-9519-478f-a092-394668d6cb52
+# ╠═f97e0145-8b03-41af-afbb-a286b25c2814
+# ╠═2aa48230-46c8-4081-891b-3b00321992d1
+# ╟─f60bc545-3889-4828-8e91-d33bca5e71f0
+# ╠═1e9a691a-d72d-43d6-9d80-2bff817bd5f0
+# ╠═6e7dfe5e-da04-44fb-9ac2-6e8ae49225fe
 # ╟─72a25914-94ee-11eb-2df9-bdc220c1b0c5
 # ╟─68d02096-03aa-4870-bf14-a28f244ce5de
 # ╠═192df0ba-94f7-11eb-2b4d-1739ff47c98c
@@ -318,3 +353,4 @@ filter!(row -> row.Species != "Iris-setosa", iris_df)
 # ╠═4929d4ca-956d-11eb-0131-a1283e495db3
 # ╠═c4544b1a-956d-11eb-260c-d54a008b6c2b
 # ╠═8badd92e-956e-11eb-2a5d-938b8332aece
+# ╟─0c08d1b7-c48b-4096-815f-107ce1b6e5b0
