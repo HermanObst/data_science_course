@@ -79,7 +79,7 @@ println("Hola Mundo")
 md"### Operadores Lógicos"
 
 # ╔═╡ e6df3128-6204-437e-ae1f-78dd15bb9029
-md"##### Enteros"
+md"##### Escalares"
 
 # ╔═╡ cf73b8cc-94ec-11eb-1319-f187362bb4b2
 2 + 2 
