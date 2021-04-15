@@ -64,7 +64,7 @@ md"""
 
 ## Instalación
 
-- https://julialang.org/downloads/platform/
+- [https://julialang.org/downloads/platform/](https://julialang.org/downloads/platform/)
 
 ## Primeros Pasos
 
@@ -281,8 +281,28 @@ combine(gdf, :PetalLengthCm => mean)
 # ╔═╡ 8badd92e-956e-11eb-2a5d-938b8332aece
 filter!(row -> row.Species != "Iris-setosa", iris_df)
 
+# ╔═╡ aa77dac9-f597-46ab-847b-21564fc769a5
+begin
+    gr()
+    plot()
+    for i in 2:5
+        plot!(iris_df[:,i], legend=false)
+    end
+    xlabel!("Flower")
+    ylabel!("Centimeters (cm)")
+    title!("Flower features")
+    current()
+end
+
 # ╔═╡ 0c08d1b7-c48b-4096-815f-107ce1b6e5b0
 md"### Referencias"
+
+# ╔═╡ 4b46904f-2ff4-4f92-a069-18463e83373d
+md"
+- [Data Science in Julia for Hackers](https://datasciencejuliahackers.com/)
+- [Capítulo introducción a Julia](https://datasciencejuliahackers.com/02_julia_intro.jl.html)
+- [Curso DataFrames JuliaAcademy](https://juliaacademy.com/p/introduction-to-dataframes-jl)
+"
 
 # ╔═╡ Cell order:
 # ╟─2193673c-94e1-11eb-175e-4df58b84eb75
@@ -353,4 +373,6 @@ md"### Referencias"
 # ╠═4929d4ca-956d-11eb-0131-a1283e495db3
 # ╠═c4544b1a-956d-11eb-260c-d54a008b6c2b
 # ╠═8badd92e-956e-11eb-2a5d-938b8332aece
+# ╠═aa77dac9-f597-46ab-847b-21564fc769a5
 # ╟─0c08d1b7-c48b-4096-815f-107ce1b6e5b0
+# ╟─4b46904f-2ff4-4f92-a069-18463e83373d
