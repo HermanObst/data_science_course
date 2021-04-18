@@ -72,7 +72,7 @@ md"""### Estadística Bayesiana
 """
 
 # ╔═╡ f9e829ed-ed1b-40ca-9f42-6503c3960163
-md"### ¿Está la moneda cargada?"
+md"### ¿La moneda está cargada?"
 
 # ╔═╡ 04883759-9066-4838-87b2-48e57f0b6c03
 md"La pregunta que queremos responder: ¿es igualmente probable sacar cara o ceca?"
