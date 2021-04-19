@@ -67,7 +67,7 @@ md"""### Estadística Bayesiana
 
 - El mismo proceso se puede dar con **distribuciones de probabilidad**
 	
-- Se cree que algún proceso de la realidad sigue una determinada distribución a priori
+- Se cree que algún proceso de la realidad sigue una determinada distribución, pero no conocemos sus *parámetros*. A estos le asignamos una distribución a priori.
 - Se contrasta con los datos y se obtiene una distribución a posteriori
 """
 
@@ -162,6 +162,31 @@ end
 # ╔═╡ c78828bf-fee8-4c6b-a4b6-89cf6571a348
 mean(posterioris[9])
 
+# ╔═╡ 0dd77ba5-55f1-4faf-b03a-cd0933033830
+mas_tiradas = rand(Bernoulli(0.5), 100)
+
+# ╔═╡ f9245f36-25e9-4a0a-af81-7bf1ee92cd97
+cadena_2 = sample(tirada_moneda(mas_tiradas), HMC(ϵ, τ), iterations, progress=false);
+
+# ╔═╡ 31c3dc15-cb49-435b-9ae4-79604874ac24
+histogram(cadena_2[:p], normed=true, legend=false, size=(500, 300), 
+			title="Distribución a posteriori luego 100 tiradas",
+			ylabel="Probabilidad", xlabel="p", xlim=(0,1))
+
+# ╔═╡ 4563bd7f-1c69-4d55-a5f3-1d8196809823
+muchas_tiradas = rand(Bernoulli(0.5), 1000)
+
+# ╔═╡ fc4c1af7-8729-46dd-9a49-9a6dced100c3
+cadena_3 = sample(tirada_moneda(muchas_tiradas), HMC(ϵ, τ), iterations, progress=false);
+
+# ╔═╡ 03e2e6e4-c2c3-4c01-9bd9-429bbea239c7
+histogram(cadena_3[:p], normed=true, legend=false, size=(500, 300), 
+			title="Distribución a posteriori luego 1000 tiradas",
+			ylabel="Probabilidad", xlabel="p", xlim=(0,1))
+
+# ╔═╡ 8ff5d846-26d1-47c1-b600-ec2b720bea3a
+mean(cadena_3[:p])
+
 # ╔═╡ b9f6ef67-89f4-484a-9b90-fd31d003970d
 md"##### **Aplicación**: detección y ubicación temporal para el cambio en la tasa de arrivo de clientes a un local"
 
@@ -235,6 +260,13 @@ md"### Referencias
 # ╠═d085f9ec-9505-4555-976f-ff1ec3515257
 # ╠═934fd4a1-878f-4c62-b40a-48d1cefc48b6
 # ╠═c78828bf-fee8-4c6b-a4b6-89cf6571a348
+# ╠═0dd77ba5-55f1-4faf-b03a-cd0933033830
+# ╠═f9245f36-25e9-4a0a-af81-7bf1ee92cd97
+# ╠═31c3dc15-cb49-435b-9ae4-79604874ac24
+# ╠═4563bd7f-1c69-4d55-a5f3-1d8196809823
+# ╠═fc4c1af7-8729-46dd-9a49-9a6dced100c3
+# ╠═03e2e6e4-c2c3-4c01-9bd9-429bbea239c7
+# ╠═8ff5d846-26d1-47c1-b600-ec2b720bea3a
 # ╟─b9f6ef67-89f4-484a-9b90-fd31d003970d
 # ╠═8fe1e658-f674-4bcd-88b8-b4611b231b5a
 # ╠═ed2bb374-862d-4d20-adf8-c302f34b0a17
