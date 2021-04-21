@@ -105,7 +105,7 @@ md"
 
 # ╔═╡ 9902d655-4aa1-4902-9da3-f5e4bbfe864b
 begin
-	plot(Normal(μ, σ), xlim=(1, 2.5), xlabel="Altura", ylabel="Probabilidad", title="Distribución de probabilidad de alturas", legend=false)
+	plot(Normal(μ, σ), xlim=(1, 2.5), xlabel="Altura", ylabel="Probabilidad", title="Distribución de probabilidad de alturas", legend=false, size=(500, 300))
 end
 
 # ╔═╡ f9e829ed-ed1b-40ca-9f42-6503c3960163
@@ -127,15 +127,15 @@ Pensemos un experimento donde tiramos una moneda 100 veces y anotamos cuántas v
 "
 
 # ╔═╡ 6bbe995a-04ca-4217-a027-6c31d22951f5
-plot(Binomial(100,0.5), legend=false, xlabel="Número de éxitos", ylabel="Probabilidad")
+plot(Binomial(100,0.5), legend=false, xlabel="Número de éxitos", ylabel="Probabilidad", size=(500, 300))
 
 # ╔═╡ 6832b13d-01dc-4fa4-ba87-18ad985e5e81
 md"
-- Como no confiamos en que la moneda este equilibrada, vamos a suponer una distribución uniforme(0,1) para la probabilidad de éxito."
+Como no confiamos en que la moneda este equilibrada, vamos a suponer una distribución uniforme(0,1) para la probabilidad de éxito. Esto es equivalente a decir que no sabemos nada sobre la moneda"
 
 # ╔═╡ 5bb9c585-6e88-4375-8209-ea82b1733a68
 begin
-	plot(Uniform(0, 1), ylim=(0, 2), xlabel="Probabilidad de obtener cara (éxito)", ylabel="Probabilidad", title="Distribución Uniforme", label=false)
+	plot(Uniform(0, 1), ylim=(0, 2), xlabel="Probabilidad de obtener cara (éxito)", ylabel="Probabilidad", title="Distribución Uniforme", label=false, size=(500, 300))
 end
 
 # ╔═╡ 0e64f052-6aae-4f03-bce0-6c9851bc0c81
@@ -176,7 +176,7 @@ La distribución posterior (o lo que es lo mismo, nuestra creencia actualizada) 
 
 # ╔═╡ 432ff5ee-82cb-4b77-8245-cabd8fb91510
 md"
-Veamos cómo queda nuestra creencia actualizada después de ver sólo el primer resultado de la tirada
+Veamos cómo queda nuestra creencia actualizada después de ver sólo el primer resultado de la tirada, usando el modelo que acabamos de crear. Nuestra creencia inicial o *prior* se va a ver modificada por los datos le mostremos a nuestro modelo. Veamoslo en el bloque de abajo,
 "
 
 # ╔═╡ 282e63f7-2a8c-44fc-9ad3-703e1c2902cf
@@ -197,8 +197,14 @@ histogram(chain[:p], normed=true, legend=false, size=(500, 300),
 
 # ╔═╡ bd9e5d11-d765-4c9d-9852-f0d5fb5c9ce4
 md"
-Esta distribución obtenida mediante sampling la podemos expresar como un histograma. La ventaja de este enfoque es que podemos obtener distribuciones que quizás nisiquiera tengan una fórmula analítica determinada, es decir, que la podamos expresar como una función de $x$. 
+Esta distribución obtenida mediante sampling la podemos expresar como un histograma. La ventaja de este enfoque es que podemos obtener distribuciones que quizás nisiquiera tengan una fórmula analítica determinada, es decir, que la podamos expresar como una función de $p$. 
+
 Aún sin tener la fórmula matemática exacta de esta distribución, el tenerla expresada como un histograma nos permite calcular probabilidades y en base a ello, tomar desiciones. Por ejemplo, la probabilidad de que la moneda esté cargada para el lado 'cara' puede ser computada sumando las probabilidades que existen de que $p$ esté entre $0.5$ y $1.0$
+"
+
+# ╔═╡ 90256372-bc1d-4110-8409-94c4482d716f
+md"
+Veamos ahora cómo se va actualizando lo que sabemos sobre la moneda a medida que incluimos más, en el mdodelo, de los datos que obtuvimos haciendo nuestra tirada de monedas,
 "
 
 # ╔═╡ 1aef4447-e44e-4243-abec-fce1f3d7141b
@@ -224,6 +230,11 @@ begin
 			  titleloc = :right, titlefont = font(8), xlim=(0,1))
 end
 
+# ╔═╡ 5d0d8c8f-9490-424e-ac3c-6feb7de7090d
+md"
+Vemos que a medida que incluimos más tiradas, el histograma que representa a nuestra creencia a posteriori se centra cada vez más alrededor del 0.5
+"
+
 # ╔═╡ c78828bf-fee8-4c6b-a4b6-89cf6571a348
 mean(posterioris[9])
 
@@ -247,13 +258,13 @@ cadena_3 = sample(tirada_moneda(muchas_tiradas), HMC(ϵ, τ), iterations, progre
 # ╔═╡ 03e2e6e4-c2c3-4c01-9bd9-429bbea239c7
 histogram(cadena_3[:p], normed=true, legend=false, size=(500, 300), 
 			title="Distribución a posteriori luego 1000 tiradas",
-			ylabel="Probabilidad", xlabel="p", xlim=(0,1))
+			ylabel="Probabilidad", xlabel="p", xlim=(0.4, 0.6))
 
 # ╔═╡ 8ff5d846-26d1-47c1-b600-ec2b720bea3a
 mean(cadena_3[:p])
 
 # ╔═╡ b9f6ef67-89f4-484a-9b90-fd31d003970d
-md"##### **Aplicación**: detección y ubicación temporal para el cambio en la tasa de arrivo de clientes a un local"
+md"#### **Aplicación**: detección y ubicación temporal del cambio en la tasa de arrivo de clientes a un local"
 
 # ╔═╡ ed2bb374-862d-4d20-adf8-c302f34b0a17
 arrivos_df = DataFrame(CSV.File("data.csv", header=false))
@@ -290,11 +301,11 @@ valores_posteriori = get(sampleo, [:μ1, :μ2, :τ]);
 
 # ╔═╡ 7390bc19-d5e2-4de5-b634-05ce9356e893
 begin
-	mu1 = histogram(valores_posteriori.μ1, normed=true, bin=10, color="green", xlabel="μ1", ylabel="Probabilidad", legend=false,title="Posterior de μ1", alpha=0.8, xlim=(0,25))
+	mu1 = histogram(valores_posteriori.μ1, normed=true, bin=10, color="green", xlabel="μ1", ylabel="Probabilidad", legend=false,title="Posterior de μ1", alpha=0.8, xlim=(6, 18))
 	
-	mu2 = histogram(valores_posteriori.μ2, bin=10, normed=true, color="red", xlabel="μ2", ylabel="Probabilidad", legend=false, title="Posterior de µ2", alpha=0.7, xlim=(0,25))
+	mu2 = histogram(valores_posteriori.μ2, bin=10, normed=true, color="red", xlabel="μ2", ylabel="Probabilidad", legend=false, title="Posterior de µ2", alpha=0.7, xlim=(6, 18))
 	
-	tau = histogram(valores_posteriori.τ, bins=25, normed=true, xlabel="Día", ylabel="Probabilidad", legend=false, title="Posterior de τ" ,alpha=0.7, xlim=(0,74))
+	tau = histogram(valores_posteriori.τ, bins=25, normed=true, xlabel="Día", ylabel="Probabilidad", legend=false, title="Posterior de τ" ,alpha=0.7, xlim=(20, 50))
 	
 	plot(mu1, mu2, tau, layout=(3,1))
 end
@@ -332,9 +343,11 @@ md"### Referencias
 # ╠═282e63f7-2a8c-44fc-9ad3-703e1c2902cf
 # ╠═d1988a04-12cd-4b87-9b3e-7514f8cf0917
 # ╟─bd9e5d11-d765-4c9d-9852-f0d5fb5c9ce4
+# ╟─90256372-bc1d-4110-8409-94c4482d716f
 # ╠═1aef4447-e44e-4243-abec-fce1f3d7141b
 # ╠═d085f9ec-9505-4555-976f-ff1ec3515257
 # ╠═934fd4a1-878f-4c62-b40a-48d1cefc48b6
+# ╟─5d0d8c8f-9490-424e-ac3c-6feb7de7090d
 # ╠═c78828bf-fee8-4c6b-a4b6-89cf6571a348
 # ╠═0dd77ba5-55f1-4faf-b03a-cd0933033830
 # ╠═f9245f36-25e9-4a0a-af81-7bf1ee92cd97
