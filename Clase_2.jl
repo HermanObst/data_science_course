@@ -4,7 +4,16 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ c22050a8-193b-45d3-9955-a64e2bca65d2
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
+# ╔═╡ 265639fb-4d6f-4785-b842-1413a4cee7ee
 using Distributions, Plots, StatsPlots
 
 # ╔═╡ bdfa8154-0a1b-4a80-b147-70f076d7eac2
@@ -71,6 +80,34 @@ md"""### Estadística Bayesiana
 - Se contrasta con los datos y se obtiene una distribución a posteriori
 """
 
+# ╔═╡ 6641dc40-496b-4e7e-affe-aef0bf082ac0
+md"
+¿Qué es una distribución de probabilidad? 
+
+Le asigna un valor de probabilidad a cada valor posible de x. Por ejemplo, si tomamos que $x$ es el valor de la altura de las personas en Argentina, tenemos la siguiente distribución de probabilidad para las alturas:
+"
+
+# ╔═╡ abc220ef-b2ec-4322-9610-ecee32e9f204
+md"
+* Media:
+"
+
+# ╔═╡ 922fff4e-7ced-48d4-b724-e9729ebbf7b6
+@bind μ html"<input type=range min=0.5 max=2.5 step=0.1>"
+
+# ╔═╡ 11b299a9-d10e-4660-86d8-902df0faba4f
+md"
+* Desvio:
+"
+
+# ╔═╡ 1ed7e2c4-7f48-492f-b65e-b26b09d6c5d1
+@bind σ html"<input type=range min=0.01 max=0.5 step=0.01>"
+
+# ╔═╡ 9902d655-4aa1-4902-9da3-f5e4bbfe864b
+begin
+	plot(Normal(μ, σ), xlim=(1, 2.5), xlabel="Altura", ylabel="Probabilidad", title="Distribución de probabilidad de alturas", legend=false)
+end
+
 # ╔═╡ f9e829ed-ed1b-40ca-9f42-6503c3960163
 md"### ¿La moneda está cargada?"
 
@@ -80,12 +117,17 @@ md"La pregunta que queremos responder: ¿es igualmente probable sacar cara o cec
 # ╔═╡ ca547033-0f21-41fb-b264-66c9a60927c7
 md"##### Distribución Binomial
 
-- Modeliza una seguidilla de experimentos donde hay dos posibilidades con una probabilidad de ocurrencia $p$ para *éxito* y $1-p$ para *fracaso*, en nuestro caso, cara o ceca.
+- Modeliza una seguidilla de experimentos (llamados experimentos de Bernoulli) donde hay dos posibilidades con una probabilidad de ocurrencia $p$ para *éxito* y $1-p$ para *fracaso*, en nuestro caso, cara o ceca.
 
 - La cuestión aquí es que justamente **no** sabemos la probabilidad $p$ de éxito, que en el caso de que la moneda no estuviera adulterada sería $p = 1 - p = 0.5$."
 
+# ╔═╡ c8849fd9-650d-40de-bf08-5dc0600ef5a6
+md"
+Pensemos un experimento donde tiramos una moneda 100 veces y anotamos cuántas veces obtenemos 'cara'.
+"
+
 # ╔═╡ 6bbe995a-04ca-4217-a027-6c31d22951f5
-plot(Binomial(100,0.5), legend=false)
+plot(Binomial(100,0.5), legend=false, xlabel="Número de éxitos", ylabel="Probabilidad")
 
 # ╔═╡ 6832b13d-01dc-4fa4-ba87-18ad985e5e81
 md"
@@ -93,10 +135,7 @@ md"
 
 # ╔═╡ 5bb9c585-6e88-4375-8209-ea82b1733a68
 begin
-	p_valores_priori = rand(Uniform(0, 1), 100000)
-	
-	histogram(p_valores_priori, normalized=true, bin=10, legend=false,
-			  size=(400, 250), ylabel="Probabilidad", xlabel="p")
+	plot(Uniform(0, 1), ylim=(0, 2), xlabel="Probabilidad de obtener cara (éxito)", ylabel="Probabilidad", title="Distribución Uniforme", label=false)
 end
 
 # ╔═╡ 0e64f052-6aae-4f03-bce0-6c9851bc0c81
@@ -117,8 +156,28 @@ begin
 	end
 end
 
+# ╔═╡ 0e2a3617-e922-41e9-8068-8c0bd94705aa
+md"
+Asociamos:
+* Cara => 1
+* Ceca => 0
+
+Después de hacer 10 tiradas con la moneda y registrar lo obtenido, tenemos:
+"
+
 # ╔═╡ 8de48e1c-3fb8-4a02-a838-50a471847db9
 tiradas_moneda = [0, 1, 1, 0, 1, 0, 0, 1, 1, 1]
+
+# ╔═╡ 90e8516f-acca-454b-b862-46f8e8d3a5ae
+md"
+En vez de tener que hacer las cuentas analíticamente (hay integrales muy feas involucradas), el desarrollo de la computación moderna nos permite poder resolver el problema de una manera alternativa.
+La distribución posterior (o lo que es lo mismo, nuestra creencia actualizada) puede ser obtenida de manera aproximada usando una técnica de *sampling*. Los detalles de esta técnica no importan ahora, lo importante es entender que nos permite obtener, de manera aproximada, la distribución de probabilidad actualizada de nuestro problema.
+"
+
+# ╔═╡ 432ff5ee-82cb-4b77-8245-cabd8fb91510
+md"
+Veamos cómo queda nuestra creencia actualizada después de ver sólo el primer resultado de la tirada
+"
 
 # ╔═╡ 282e63f7-2a8c-44fc-9ad3-703e1c2902cf
 begin
@@ -128,13 +187,19 @@ begin
 	τ = 10
 
 	# Start sampling.
-	chain = sample(tirada_moneda(tiradas_moneda[1]), HMC(ϵ, τ), iterations, progress=false);
+	chain = sample(tirada_moneda(tiradas_moneda[1]), HMC(ϵ, τ), iterations, progress=false)
 end;
 
 # ╔═╡ d1988a04-12cd-4b87-9b3e-7514f8cf0917
 histogram(chain[:p], normed=true, legend=false, size=(500, 300), 
 			title="Distribución a posteriori luego de sacar ceca",
 			ylabel="Probabilidad", xlabel="p")
+
+# ╔═╡ bd9e5d11-d765-4c9d-9852-f0d5fb5c9ce4
+md"
+Esta distribución obtenida mediante sampling la podemos expresar como un histograma. La ventaja de este enfoque es que podemos obtener distribuciones que quizás nisiquiera tengan una fórmula analítica determinada, es decir, que la podamos expresar como una función de $x$. 
+Aún sin tener la fórmula matemática exacta de esta distribución, el tenerla expresada como un histograma nos permite calcular probabilidades y en base a ello, tomar desiciones. Por ejemplo, la probabilidad de que la moneda esté cargada para el lado 'cara' puede ser computada sumando las probabilidades que existen de que $p$ esté entre $0.5$ y $1.0$
+"
 
 # ╔═╡ 1aef4447-e44e-4243-abec-fce1f3d7141b
 begin
@@ -243,19 +308,30 @@ md"### Referencias
 # ╔═╡ Cell order:
 # ╟─1b6013d8-9fc0-11eb-198a-c709f6caab97
 # ╟─415aa9c5-0fa4-4af3-910c-3eb2ebc5f13c
+# ╟─6641dc40-496b-4e7e-affe-aef0bf082ac0
+# ╠═265639fb-4d6f-4785-b842-1413a4cee7ee
+# ╟─abc220ef-b2ec-4322-9610-ecee32e9f204
+# ╟─922fff4e-7ced-48d4-b724-e9729ebbf7b6
+# ╟─11b299a9-d10e-4660-86d8-902df0faba4f
+# ╟─1ed7e2c4-7f48-492f-b65e-b26b09d6c5d1
+# ╠═9902d655-4aa1-4902-9da3-f5e4bbfe864b
 # ╟─f9e829ed-ed1b-40ca-9f42-6503c3960163
 # ╟─04883759-9066-4838-87b2-48e57f0b6c03
-# ╠═c22050a8-193b-45d3-9955-a64e2bca65d2
 # ╠═bdfa8154-0a1b-4a80-b147-70f076d7eac2
 # ╟─ca547033-0f21-41fb-b264-66c9a60927c7
+# ╟─c8849fd9-650d-40de-bf08-5dc0600ef5a6
 # ╠═6bbe995a-04ca-4217-a027-6c31d22951f5
 # ╟─6832b13d-01dc-4fa4-ba87-18ad985e5e81
 # ╠═5bb9c585-6e88-4375-8209-ea82b1733a68
 # ╟─0e64f052-6aae-4f03-bce0-6c9851bc0c81
 # ╠═37e83672-7d9d-471b-8c40-750e7b0a902b
-# ╠═8de48e1c-3fb8-4a02-a838-50a471847db9
+# ╟─0e2a3617-e922-41e9-8068-8c0bd94705aa
+# ╟─8de48e1c-3fb8-4a02-a838-50a471847db9
+# ╟─90e8516f-acca-454b-b862-46f8e8d3a5ae
+# ╟─432ff5ee-82cb-4b77-8245-cabd8fb91510
 # ╠═282e63f7-2a8c-44fc-9ad3-703e1c2902cf
 # ╠═d1988a04-12cd-4b87-9b3e-7514f8cf0917
+# ╟─bd9e5d11-d765-4c9d-9852-f0d5fb5c9ce4
 # ╠═1aef4447-e44e-4243-abec-fce1f3d7141b
 # ╠═d085f9ec-9505-4555-976f-ff1ec3515257
 # ╠═934fd4a1-878f-4c62-b40a-48d1cefc48b6
