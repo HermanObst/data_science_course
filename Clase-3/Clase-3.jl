@@ -211,13 +211,13 @@ end;
 mxval, mxindx = findmax(mean(ganancia, dims=2); dims=1);
 
 # ╔═╡ 402d63a8-cf38-4a1e-8e24-0c8e72d1f8f2
-mxval[1]
+mxval[1] #Ganancia media
 
 # ╔═╡ 2848ff96-39ce-4b98-a58c-0021971743a9
-unfav = mxval[1] - std(ganancia[mxindx[1][1], : ])
+desfavorable = mxval[1] - std(ganancia[mxindx[1][1], : ]) #Ganancia caso desfavorable
 
 # ╔═╡ 280f65a6-9ef6-4b34-9b9c-d22d7d141183
-fav = mxval[1] + std(ganancia[mxindx[1][1], : ])
+favorable = mxval[1] + std(ganancia[mxindx[1][1], : ]) #Ganancia caso favorable
 
 # ╔═╡ 3f7e3b90-f964-4819-966f-c3190b1f428f
 begin
@@ -238,14 +238,76 @@ xlabel!("Precio")
 ylabel!("Ganancia")
 end
 
+# ╔═╡ d9ab2acf-7fc7-4b57-b596-629e8f4e50ea
+md"##### Cuantificación del riesgo"
+
 # ╔═╡ 839f838d-b2fe-48bb-a47d-79c7f71ff7a3
 std_p = [std(ganancia[i, : ]) for i in collect(1:length(p))]
 
 # ╔═╡ 43f52222-be42-4042-b9da-a95bd61a86e8
 plot(p,std_p, legend=false, xlabel = "Price", ylabel= "Desviación standard de la ganancia", lw=2)
 
-# ╔═╡ 3ccc725b-e1bf-48eb-8a77-f63eedbb1aab
+# ╔═╡ 7517412b-0196-4727-a787-01efd524fd3e
+md"Vemos que la incertidumbre sube mucho a medida que el precio baja! Veamos que pasa con otro valor de P, por ejemplo 4000"
 
+# ╔═╡ 7fe7bda0-46ca-4574-a6ca-21304fd54cda
+cantidades_p_4000 = q[findfirst(isequal(4000), p), : ]
+
+# ╔═╡ 8dd3331a-8e32-4ee7-89c3-6032034ac2d9
+ganancias_p_4000 = ganancia[findfirst(isequal(4000), p), :]
+
+# ╔═╡ 740f553d-3c0e-4a72-ba06-ae25a47babd4
+mean(ganancias_p_4000) #ganancia media con precio = $4000
+
+# ╔═╡ 7f7f59f0-cd07-4538-badf-a7dfaec29409
+desfavorable_4000 = mean(ganancias_p_4000) - std(ganancias_p_4000) 
+
+# ╔═╡ edf807ac-d41e-4068-be49-2cee7a52f042
+favorable_4000 = mean(ganancias_p_4000) + std(ganancias_p_4000)
+
+# ╔═╡ 422a9120-40ee-46b0-a701-f3dfa8355ee4
+begin	
+plot()
+	
+for i in collect(1:length(post_c[1]))
+			plot!(p,ganancia[:,i], color="blue", label=false, alpha = 0.1)
+end
+	
+plot!(p,mean(ganancia, dims=2) + std(ganancia, dims=2),  color = "orange", lw=2, label =s2)
+	
+plot!(p,mean(ganancia, dims=2), color = "red", lw=4, label=s)
+	
+plot!(p,mean(ganancia, dims=2) - std(ganancia, dims=2),  color = "orange", lw=2, label="")
+	
+vline!([4000], [4000], line = (:purple, 3), label=false)
+vline!(p[mxindx], p[mxindx], line = (:black, 3), label=s3)
+xlabel!("Precio")
+ylabel!("Ganancia")
+plot!(legend=true)
+end
+
+# ╔═╡ 5e3a7c87-36c3-421d-bd2b-f9853ed169f3
+md"Entonces, en el caso de elegir el precio de $4000 obtenemos una disminución porcentual de la ganancia media del:"
+
+# ╔═╡ bad71016-9962-43ae-90ac-a127cb235105
+dif_porcen_genancia_media = ((mean(ganancias_p_4000) - mxval[1]) / mxval[1]) * 100
+
+# ╔═╡ ad7d8705-7dc2-42e9-a776-adad044ab384
+dif_porcentual_desfavorable = (desfavorable_4000 - desfavorable)/desfavorable * 100
+
+# ╔═╡ 42ca7571-6d17-4554-ab96-858d630518a7
+dif_porcentual_desfavorable / dif_porcen_genancia_media
+
+# ╔═╡ 4ebe5f54-1630-4e85-9f61-bd3cf8e71637
+md"Lo que nos indica que por cada peso que perdemos en ganancia media, ganamos más del doble en reducción de la variabilidad!"
+
+# ╔═╡ 9946d1ef-358c-4a57-a536-b4d5c26999bd
+md"### Referencias
+
+- [Chad Scherrer Bayesian Optimal Pricing Post](https://cscherrer.github.io/post/max-profit/)
+- [Capítulo 9, Data science in Julia for Hackers](https://datasciencejuliahackers.com/09_optimal_pricing.jl.html)
+
+"
 
 # ╔═╡ Cell order:
 # ╟─c42c63d2-a615-11eb-094c-07ffc56e14b0
@@ -276,6 +338,19 @@ plot(p,std_p, legend=false, xlabel = "Price", ylabel= "Desviación standard de l
 # ╠═280f65a6-9ef6-4b34-9b9c-d22d7d141183
 # ╠═6364fa28-0737-43f2-b5d4-5f743ce64ea1
 # ╠═3f7e3b90-f964-4819-966f-c3190b1f428f
+# ╟─d9ab2acf-7fc7-4b57-b596-629e8f4e50ea
 # ╠═839f838d-b2fe-48bb-a47d-79c7f71ff7a3
 # ╠═43f52222-be42-4042-b9da-a95bd61a86e8
-# ╠═3ccc725b-e1bf-48eb-8a77-f63eedbb1aab
+# ╟─7517412b-0196-4727-a787-01efd524fd3e
+# ╠═7fe7bda0-46ca-4574-a6ca-21304fd54cda
+# ╠═8dd3331a-8e32-4ee7-89c3-6032034ac2d9
+# ╠═740f553d-3c0e-4a72-ba06-ae25a47babd4
+# ╠═7f7f59f0-cd07-4538-badf-a7dfaec29409
+# ╠═edf807ac-d41e-4068-be49-2cee7a52f042
+# ╠═422a9120-40ee-46b0-a701-f3dfa8355ee4
+# ╟─5e3a7c87-36c3-421d-bd2b-f9853ed169f3
+# ╠═bad71016-9962-43ae-90ac-a127cb235105
+# ╠═ad7d8705-7dc2-42e9-a776-adad044ab384
+# ╠═42ca7571-6d17-4554-ab96-858d630518a7
+# ╟─4ebe5f54-1630-4e85-9f61-bd3cf8e71637
+# ╟─9946d1ef-358c-4a57-a536-b4d5c26999bd
