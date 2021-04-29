@@ -60,7 +60,7 @@ Al ser los parámetros de nuestros modelos **distribuciones** de probabilidad, e
 """
 
 # ╔═╡ 93ea39ee-6aa6-41f2-8ece-7b3715a9a060
-md"""La idea de este problema es que tenemos un nuevo producto que lanzar. Sabemos nuestros costos de producción, pero no sabemos el precio óptimo para maximizar nuestras ganancias.
+md"La idea de este problema es que tenemos un nuevo producto que lanzar. Sabemos nuestros costos de producción, pero no sabemos el precio óptimo para maximizar nuestras ganancias.
 
 Como sabemos que:
 
@@ -70,7 +70,17 @@ y que al subir el precio, las cantidades que nos compran van a tender a disminui
 
 Para esto, vamos a querer construir la curva de demanda de nuestro producto utilizando una prueba piloto. En esta caso usaremos el modelo clásico P vs Q:
 
-$Q = aP^{c}$"""
+$Q = aP^{c}$
+
+Pero decir esto, sería olvidarnos de la naturaleza aleatoria de la variable Q. Osea, al definir un precio no podemos obtener la cantidad **exacta** de Q, pero si un valor esperado.
+
+Más correcto sería decir:
+
+$E[Q|P] = aP^{c}$
+
+Así no nos olvidamos que Q es una *variable aleatoria*. En paricular, vamos a proponer que Q viene de una Poisson con parámetro (media) $Q_{medio} = E[Q|P] = aP^{c}$
+
+$Q \sim Poisson(Q_{med})$"
 
 # ╔═╡ ae70c258-249f-4a1e-9bcc-f778dad4146e
 begin
@@ -78,9 +88,9 @@ begin
 a = 5000
 c = -0.9
 P = 1:100
-Q = a.*(P.^c)
+Q_ = a.*(P.^c)
 
-plot(P, Q, legend=false, title="Modelo de Cantidad vs Precio")
+plot(P, Q_, legend=false, title="Modelo de Cantidad vs Precio")
 
 xlabel!("Precio")
 ylabel!("Cantidad")
@@ -89,7 +99,11 @@ end
 # ╔═╡ e8856141-2d30-41c6-80af-e05f434f69fd
 md"Para facilitar el trabajo, vamos a linealizar la relación propuesta:
 
-$log(Q)=log(a) + c*log(P)$" 
+$log(Q)=log(a) + c*log(P)$
+
+Se puede pensar como una recta:
+
+$Y = b + m*X$" 
 
 # ╔═╡ 55100ed9-c4dc-4b3f-9832-e412b6299149
 md"Definamos nuestro modelo:"
@@ -99,10 +113,11 @@ begin
 	@model function demanda(qval,p0)
 	loga ~ Cauchy()
 	c ~ Cauchy()
-	logμ0 = loga .+ c*(log.(p0) .- mean(log.(p0)))
-	μ0 = exp.(logμ0)
-	for i in eachindex(µ0)
-		qval[i] ~ Poisson(μ0[i])
+	logQ0 = loga .+ c*(log.(p0) .- mean(log.(p0)))
+		
+	Q0 = exp.(logQ0)
+	for i in eachindex(Q0)
+		qval[i] ~ Poisson(Q0[i])
 	end
 end
 end
