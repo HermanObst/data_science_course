@@ -56,7 +56,7 @@ md"""
 
 Al ser los parámetros de nuestros modelos **distribuciones** de probabilidad, el modelado bayesiano nos permite incluir la incertidumbre de manera integral.
 
-#### Aplicación: Modelo para elección del precio óptimo de un producto contando con una prueba piloto.
+### Aplicación: Modelo para elección del precio óptimo de un producto contando con una prueba piloto.
 """
 
 # ╔═╡ 93ea39ee-6aa6-41f2-8ece-7b3715a9a060
@@ -85,10 +85,10 @@ $Q \sim Poisson(Q_{med})$"
 # ╔═╡ ae70c258-249f-4a1e-9bcc-f778dad4146e
 begin
 
-a = 5000
-c = -0.9
+a = 500
+c_ = -0.9
 P = 1:100
-Q_ = a.*(P.^c)
+Q_ = a.*(P.^c_)
 
 plot(P, Q_, legend=false, title="Modelo de Cantidad vs Precio")
 
@@ -148,6 +148,9 @@ begin
 	posterior = sample(modelo, NUTS(),1000)
 end;
 
+# ╔═╡ c6e56884-4853-4c90-8e72-0caae4ad0844
+md"$log(Q)=log(a) + c*log(P)$"
+
 # ╔═╡ 3fb416de-79eb-4950-a0b2-040c04619228
 begin
 	post_loga = collect(get(posterior, :loga))
@@ -188,6 +191,9 @@ for i in collect(1:length(post_c[1]))
 end
 end
 
+# ╔═╡ 9044ccbe-f2a6-4fcd-8894-8fe943f78b55
+q
+
 # ╔═╡ 9e2d40f3-d971-4b21-8f75-e22fe8e1bc43
 begin
 	plot(p,q[:,1], xlim=(1000,6000))
@@ -221,6 +227,9 @@ costo_variable = costo_var_unit .* q
 costo_total = costo_variable .+ costo_fijo
 ganancia = p .* q .- costo_total
 end;
+
+# ╔═╡ 4f551424-e5aa-49c6-b27b-06c6058c9ac9
+ganancia
 
 # ╔═╡ 6105a2c4-9e3f-4e4f-a028-3bac8a758bf3
 mxval, mxindx = findmax(mean(ganancia, dims=2); dims=1);
@@ -338,15 +347,18 @@ md"### Referencias
 # ╟─6b5f7859-8f6d-48f2-b027-0df88f504ea0
 # ╠═f6546947-a5f0-43b1-bc18-bd7bad36b82a
 # ╠═f45fbaf8-02d0-4cd4-971f-a1b058d011cd
+# ╟─c6e56884-4853-4c90-8e72-0caae4ad0844
 # ╠═3fb416de-79eb-4950-a0b2-040c04619228
 # ╠═8a08fe88-184f-4d64-9fc5-abe87a9c8422
 # ╠═8fe80c8a-023e-486d-bcbd-bb2244a26356
 # ╟─27fd6af3-0864-4276-a7c6-a4ee2896dcbe
 # ╟─8f3f610c-cc20-4f74-ba90-8af10cbf74bc
 # ╠═a41ed419-0fd0-4d0f-8ea9-5f9347fca281
+# ╠═9044ccbe-f2a6-4fcd-8894-8fe943f78b55
 # ╠═9e2d40f3-d971-4b21-8f75-e22fe8e1bc43
 # ╟─3675d864-5169-46fb-b4fd-4191a84e33a3
 # ╠═c6e0c9ef-86c8-4d8e-9d08-82beb3d03668
+# ╠═4f551424-e5aa-49c6-b27b-06c6058c9ac9
 # ╠═6105a2c4-9e3f-4e4f-a028-3bac8a758bf3
 # ╠═402d63a8-cf38-4a1e-8e24-0c8e72d1f8f2
 # ╠═2848ff96-39ce-4b98-a58c-0021971743a9
